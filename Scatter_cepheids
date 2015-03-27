@@ -1,0 +1,41 @@
+# "magnitud" de las estrellas cefeidas versus el logaritmo de su período 
+#EN ESTE CASO GRAFIQUÉ EL LOGARITMO DEL PERIODO EN DIAS SIN ESCALA LOGARITMICA.
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import pearsonr
+from matplotlib import pyplot
+
+# Guardar los datos en NumPy arrays 
+y = np.array([13.6, 11.2, 12.2, 11.4, 13.4, 14.6, 13.9, 14.1, 14.3, 
+                         14.8, 14.8, 14.8, 15.1, 14.4, 14.3, 14.3])
+x = np.array([1.0143525, 2.1038037, 1.5043349, 1.8182259, 1.1293676, 0.6324269, 0.9241242, 0.8228216, 0.657725, 
+                        0.221075, 0.2460059, 0.0980758, 0.2730059, 0.7251763, 0.7261565, 0.6978045])
+
+# Parametros de la grafica
+plt.scatter(x,y,c='cyan',s=45,alpha=0.5,label='Variables en SMC')
+plt.xlabel('Periodo en dias')
+plt.ylabel('Magnitud')
+plt.title('RELACION PERIODO-MAGNITUD')
+plt.gca().invert_yaxis()
+
+#Ajuste lineal
+m, b = np.polyfit(x, y, 1)
+print (m,b)
+M=str(m)
+B=str(b)
+txt = plt.text(0.3,15.5,('y=',M,'x+',B), fontsize=8)
+
+# Mostrar Grafica 
+plt.plot()
+
+#Mostrar Linea de tendencia
+plt.plot(x, m*x + b, '--', label='Ajuste Lineal')
+plt.legend(loc=0)
+
+#correlacion
+correlacion=pearsonr(x, y)
+print (correlacion)
+txt = plt.text(0.3,15.8,('R=',correlacion), fontsize=8)
+#Los datos muestran una correlacion de -0.97, muy proximo a -1 lo que implica una buena correlacion de los datos
+#ajustandose linealmente
+pyplot.savefig("output.png")
